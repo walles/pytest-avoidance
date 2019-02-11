@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import pytest
+import _pytest.reports
 
 
 def known_pass(item):
@@ -23,7 +23,7 @@ def fake_pass_report(item, stage):
     for rwhen, key, content in item._report_sections:
         sections.append(("Captured %s %s" % (key, rwhen), content))
 
-    return pytest.TestReport(
+    return _pytest.reports.TestReport(
         item.nodeid,
         item.location,
         keywords,
