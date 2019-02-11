@@ -3,19 +3,24 @@
 import pytest
 
 
-def pytest_addoption(parser):
-    group = parser.getgroup('avoidance')
-    group.addoption(
-        '--foo',
-        action='store',
-        dest='dest_foo',
-        default='2019',
-        help='Set the value for the fixture "bar".'
-    )
+def pytest_collection_modifyitems(session, config, items):
+    # FIXME: Filter out known-pass items
 
-    parser.addini('HELLO', 'Dummy pytest.ini setting')
+    # FIXME: For all filtered-out item:
+    # item.ihook.pytest_runtest_logreport(setup_report)
+    # item.ihook.pytest_runtest_logreport(call_report)
+    # item.ihook.pytest_runtest_logreport(teardown_report)
+
+    pass
 
 
-@pytest.fixture
-def bar(request):
-    return request.config.option.dest_foo
+def pytest_runtest_setup(item):
+    # FIXME: Start coverage tracking
+
+    pass
+
+
+def pytest_runtest_teardown(item, nextitem):
+    # FIXME: Collect coverate into a deps file
+
+    pass
