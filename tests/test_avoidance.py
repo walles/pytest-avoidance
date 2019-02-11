@@ -34,7 +34,11 @@ def test_skips_rerun_on_pass(testdir):
     """.format(timestampfile))
 
     # Test should pass
-    assert testdir.runpytest().ret == 0
+    result = testdir.runpytest('-v')
+    assert result.ret == 0
+    result.stdout.fnmatch_lines([
+        '*::test_test PASSED*',
+    ])
 
     # Store test run timestamp
     t0 = os.path.getmtime(timestampfile)
@@ -44,9 +48,11 @@ def test_skips_rerun_on_pass(testdir):
     time.sleep(1.1)
 
     # Rerunning the test should still pass, since we haven't modified anything
-    assert testdir.runpytest().ret == 0
-
-    # FIXME: Verify that pytest says one (1) test was run
+    result = testdir.runpytest('-v')
+    assert result.ret == 0
+    result.stdout.fnmatch_lines([
+        '*::test_test PASSED*',
+    ])
 
     # Verify that the test pass was from the cache
     t1 = os.path.getmtime(timestampfile)
@@ -65,7 +71,12 @@ def test_do_rerun_on_fail(testdir):
     """.format(timestampfile))
 
     # Test should fail
-    assert testdir.runpytest().ret == 1
+    result = testdir.runpytest()
+    assert result.ret == 1
+    result.stdout.fnmatch_lines([
+        'collected 1 item',
+        'test_test.py:5: AssertionError',
+    ])
 
     # Store test run timestamp
     t0 = os.path.getmtime(timestampfile)
@@ -75,9 +86,12 @@ def test_do_rerun_on_fail(testdir):
     time.sleep(1.1)
 
     # Rerunning the test should still fail, since we haven't modified anything
-    assert testdir.runpytest().ret == 1
-
-    # FIXME: Verify that pytest says one (1) test was run
+    result = testdir.runpytest()
+    assert result.ret == 1
+    result.stdout.fnmatch_lines([
+        'collected 1 item',
+        'test_test.py:5: AssertionError',
+    ])
 
     # Verify that the test fail was from a rerun
     t1 = os.path.getmtime(timestampfile)
