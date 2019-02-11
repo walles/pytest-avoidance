@@ -1,8 +1,24 @@
 # -*- coding: utf-8 -*-
 
 
-def test_runs_test_on_test_change(testdir):
-    assert False and "Not implemented"
+def test_reruns_test_on_test_change(testdir):
+    # create a temporary pytest test module
+    testdir.makepyfile(test_test="""
+        def test_test():
+            assert True
+    """)
+
+    # Verify that the test suite passed
+    assert testdir.runpytest().ret == 0
+
+    # Update the test to fail
+    testdir.makepyfile(test_test="""
+        def test_test():
+            assert False
+    """)
+
+    # Verify that the test suite failed after we changed it
+    assert testdir.runpytest().ret != 0
 
 
 def test_runs_test_on_code_change(testdir):
