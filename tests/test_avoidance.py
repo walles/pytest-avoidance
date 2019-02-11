@@ -1,6 +1,18 @@
 # -*- coding: utf-8 -*-
 
 
+def test_runs_test_on_test_change(testdir):
+    assert False and "Not implemented"
+
+
+def test_runs_test_on_code_change(testdir):
+    assert False and "Not implemented"
+
+
+def test_skips_rerun(testdir):
+    assert False and "Not implemented"
+
+
 def test_bar_fixture(testdir):
     """Make sure that pytest accepts our fixture."""
 
