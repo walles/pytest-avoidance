@@ -22,7 +22,8 @@ Makes pytest skip tests that don't need rerunning
 
 ----
 
-This `pytest`_ plugin was generated with `Cookiecutter`_ along with `@hackebrot`_'s `cookiecutter-pytest-plugin`_ template.
+This `pytest`_ plugin was generated with `Cookiecutter`_ along with
+`@hackebrot`_'s `cookiecutter-pytest-plugin`_ template.
 
 
 Features
@@ -58,13 +59,15 @@ the coverage at least stays the same before you submit a pull request.
 License
 -------
 
-Distributed under the terms of the `MIT`_ license, "pytest-avoidance" is free and open source software
+Distributed under the terms of the `MIT`_ license, "pytest-avoidance" is free
+and open source software
 
 
 Issues
 ------
 
-If you encounter any problems, please `file an issue`_ along with a detailed description.
+If you encounter any problems, please `file an issue`_ along with a detailed
+description.
 
 .. _`Cookiecutter`: https://github.com/audreyr/cookiecutter
 .. _`@hackebrot`: https://github.com/hackebrot
