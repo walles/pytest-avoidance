@@ -3,6 +3,9 @@
 import _pytest.reports
 
 
+have_cache_hits = False
+
+
 def known_pass(item):
     # FIXME: Actually check the cache
     return False
@@ -37,12 +40,14 @@ def fake_pass_report(item, stage):
 
 
 def pytest_collection_modifyitems(session, config, items):
+    global have_cache_hits
     cache_hits = []
     cache_misses = []
 
     # Filter out known-pass items
     for item in items:
         if known_pass(item):
+            have_cache_hits = True
             cache_hits.append(item)
         else:
             cache_misses.append(item)
@@ -63,3 +68,10 @@ def pytest_runtest_teardown(item, nextitem):
     # FIXME: Collect coverate into a deps file
 
     pass
+
+
+def pytest_sessionfinish(session, exitstatus):
+    if exitstatus == 5 and have_cache_hits:
+        # Exit status 5 means no tests were run. If we have cache hits,
+        # this means we hit all tests, and we should report all-tests-run.
+        session.exitstatus = 0
