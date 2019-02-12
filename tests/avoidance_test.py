@@ -10,7 +10,7 @@ def test_reruns_test_on_test_change(testdir):
     """)
 
     # Verify that the test suite passed
-    assert testdir.runpytest().ret == 0
+    assert testdir.runpytest('-v').ret == 0
 
     # Update the test to fail
     testdir.makepyfile(test_test="""
@@ -19,7 +19,7 @@ def test_reruns_test_on_test_change(testdir):
     """)
 
     # Verify that the test suite failed after we changed it
-    assert testdir.runpytest().ret != 0
+    assert testdir.runpytest('-v').ret != 0
 
 
 def test_skips_rerun_on_pass(testdir):
@@ -72,11 +72,10 @@ def test_do_rerun_on_fail(testdir):
     """.format(timestampfile))
 
     # Test should fail
-    result = testdir.runpytest()
+    result = testdir.runpytest('-v')
     assert result.ret == 1
     result.stdout.fnmatch_lines([
-        'collected 1 item',
-        'test_test.py:5: AssertionError',
+        u'test_test.py::test_test FAILED*',
     ])
 
     # Store test run timestamp
@@ -87,11 +86,10 @@ def test_do_rerun_on_fail(testdir):
     time.sleep(1.1)
 
     # Rerunning the test should still fail, since we haven't modified anything
-    result = testdir.runpytest()
+    result = testdir.runpytest('-v')
     assert result.ret == 1
     result.stdout.fnmatch_lines([
-        'collected 1 item',
-        'test_test.py:5: AssertionError',
+        u'test_test.py::test_test FAILED*',
     ])
 
     # Verify that the test fail was from a rerun
