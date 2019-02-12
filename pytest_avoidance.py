@@ -75,8 +75,13 @@ def get_depsfile_name(item):
     cachedir = os.path.join(CACHEROOT, VM_IDENTIFIER, test_file)
 
     mkdir_p(cachedir)
-    depsfile_name = os.path.join(cachedir, item.name + ".deps")
 
+    readme = os.path.join(CACHEROOT, 'README.txt')
+    if not os.path.isfile(readme):
+        with open(readme, "w") as readme_file:
+            readme_file.write("See: https://github.com/walles/pytest-avoidance")
+
+    depsfile_name = os.path.join(cachedir, item.name + ".deps")
     return depsfile_name
 
 
