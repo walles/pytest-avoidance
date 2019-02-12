@@ -27,7 +27,7 @@ def fake_pass_report(item, stage):
         item.nodeid,
         item.location,
         keywords,
-        "pass",
+        "passed",  # Magic constant: https://github.com/pytest-dev/pytest/blob/7dcd9bf5add337686ec6f2ee81b24e8424319dba/src/_pytest/reports.py#L92
         longrepr,
         stage,
         sections,
@@ -49,9 +49,8 @@ def pytest_collection_modifyitems(session, config, items):
     items[:] = cache_misses
 
     for hit in cache_hits:
-        hit.ihook.pytest_runtest_logreport(fake_pass_report(item, "setup"))
-        hit.ihook.pytest_runtest_logreport(fake_pass_report(item, "call"))
-        hit.ihook.pytest_runtest_logreport(fake_pass_report(item, "teardown"))
+        # Log "setup" and "teardown" here as well?
+        hit.ihook.pytest_runtest_logreport(report=fake_pass_report(item, "call"))
 
 
 def pytest_runtest_setup(item):
