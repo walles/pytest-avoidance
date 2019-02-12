@@ -56,7 +56,8 @@ def test_skips_rerun_on_pass(testdir):
 
     # Verify that the test pass was from the cache
     t1 = os.path.getmtime(timestampfile)
-    assert "Result should have come from the cache, and rerun skipped" and (t1 == t0)
+    assert "Result should have come from the cache, and rerun skipped" \
+        and (t1 == t0)
 
 
 def test_do_rerun_on_fail(testdir):
