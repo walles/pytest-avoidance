@@ -150,25 +150,26 @@ def pytest_collection_modifyitems(session, config, items):
 def pytest_runtest_setup(item):
     # Start coverage tracking
     cov = coverage.Coverage()
-    item['avoidance-coverage'] = cov
+    item.avoidance_coverage = cov
     cov.start()
-
-
-def pytest_runtest_teardown(item, nextitem):
-    # Collect coverate into a deps file
-    cov = item['avoidance-coverage']
-    cov.stop()
 
 
 @pytest.hookimpl(tryfirst=True)
 def pytest_runtest_makereport(item, call):
+    if call.when != "call":
+        # Coverage should be collected only in conjunction with actually running the test
+        return None
+
+    # Collect coverate into a deps file
+    cov = item.avoidance_coverage
+    cov.stop()
+
     if call.excinfo:
         # We don't cache failures
         return
 
-    cov = item['avoidance-coverage']
     coverage_data = cov.get_data()
-    item['avoidance-coverage'] = None
+    item.avoidance_coverage = None
 
     with open(get_depsfile_name(item), "w") as depsfile:
         for filename in coverage_data.measured_files():
