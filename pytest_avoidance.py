@@ -11,12 +11,16 @@ import errno
 import sys
 import os
 
-# FIXME: Put this where .pytest_cache is, how do they find their location?
-CACHEROOT = '/tmp/FIXME/.pytest-avoidance'
+CACHEROOT = None
 
 
 # Global state
 have_cache_hits = False
+
+
+def pytest_configure(config):
+    global CACHEROOT
+    CACHEROOT = os.path.join(str(config.rootdir), '.pytest-avoidance')
 
 
 def get_vm_identifier():
@@ -64,6 +68,9 @@ def get_depsfile_name(item):
     if test_file[0] == '/':
         # Starting the path with '/' would mess up os.path.join()
         test_file = test_file[1:]
+
+    # This should have been set up in pytest_configure() (see above)
+    assert CACHEROOT is not None
 
     cachedir = os.path.join(CACHEROOT, VM_IDENTIFIER, test_file)
 
