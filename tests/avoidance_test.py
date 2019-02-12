@@ -5,7 +5,7 @@ import time
 def test_reruns_test_on_test_change(testdir):
     # Create a passing test
     testdir.makepyfile(test_test="""
-        def test_test():
+        def test_for_reruns_test_on_test_change():
             assert True
     """)
 
@@ -14,7 +14,7 @@ def test_reruns_test_on_test_change(testdir):
 
     # Update the test to fail
     testdir.makepyfile(test_test="""
-        def test_test():
+        def test_for_reruns_test_on_test_change():
             assert False
     """)
 
@@ -26,7 +26,7 @@ def test_skips_rerun_on_pass(testdir):
     # Create a test that stores its runtime on disk
     timestampfile = str(testdir.tmpdir.join("timestampfile"))
     testdir.makepyfile(test_test="""
-        def test_test():
+        def test_for_skips_rerun_on_pass():
             with open("{}", "w") as text_file:
                 text_file.write("Johan")
 
@@ -37,7 +37,7 @@ def test_skips_rerun_on_pass(testdir):
     result = testdir.runpytest('-v')
     assert result.ret == 0
     result.stdout.fnmatch_lines([
-        '*::test_test PASSED*',
+        '*::test_for_skips_rerun_on_pass PASSED*',
     ])
 
     # Store test run timestamp
@@ -51,7 +51,7 @@ def test_skips_rerun_on_pass(testdir):
     result = testdir.runpytest('-v')
     assert result.ret == 0
     result.stdout.fnmatch_lines([
-        '*::test_test PASSED*',
+        '*::test_for_skips_rerun_on_pass PASSED*',
     ])
 
     # Verify that the test pass was from the cache
@@ -64,7 +64,7 @@ def test_do_rerun_on_fail(testdir):
     # Create a test that stores its runtime on disk
     timestampfile = str(testdir.tmpdir.join("timestampfile"))
     testdir.makepyfile(test_test="""
-        def test_test():
+        def test_for_do_rerun_on_fail():
             with open("{}", "w") as text_file:
                 text_file.write("Johan")
 
@@ -75,7 +75,7 @@ def test_do_rerun_on_fail(testdir):
     result = testdir.runpytest('-v')
     assert result.ret == 1
     result.stdout.fnmatch_lines([
-        u'test_test.py::test_test FAILED*',
+        u'test_test.py::test_for_do_rerun_on_fail FAILED*',
     ])
 
     # Store test run timestamp
@@ -89,7 +89,7 @@ def test_do_rerun_on_fail(testdir):
     result = testdir.runpytest('-v')
     assert result.ret == 1
     result.stdout.fnmatch_lines([
-        u'test_test.py::test_test FAILED*',
+        u'test_test.py::test_for_do_rerun_on_fail FAILED*',
     ])
 
     # Verify that the test fail was from a rerun
