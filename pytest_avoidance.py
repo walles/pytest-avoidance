@@ -124,7 +124,7 @@ def fake_pass_report(item, stage):
     for rwhen, key, content in item._report_sections:
         sections.append(("Captured %s %s" % (key, rwhen), content))
 
-    return _pytest.reports.TestReport(
+    fake_report = _pytest.reports.TestReport(
         item.nodeid,
         item.location,
         keywords,
@@ -135,6 +135,9 @@ def fake_pass_report(item, stage):
         0,
         user_properties=item.user_properties,
     )
+
+    # Log "setup" and "teardown" here as well?
+    item.ihook.pytest_runtest_logreport(report=fake_report)
 
 
 def pytest_collection_modifyitems(session, config, items):
@@ -152,8 +155,7 @@ def pytest_collection_modifyitems(session, config, items):
     items[:] = cache_misses
 
     for hit in cache_hits:
-        # Log "setup" and "teardown" here as well?
-        hit.ihook.pytest_runtest_logreport(report=fake_pass_report(item, "call"))
+        fake_pass_report(hit, "call")
 
 
 def pytest_runtest_setup(item):
