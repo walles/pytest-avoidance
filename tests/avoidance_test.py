@@ -12,6 +12,10 @@ def test_reruns_test_on_test_change(testdir):
     # Verify that the test suite passed
     assert testdir.runpytest('-v').ret == 0
 
+    # Ensure next modification time is far enough away.
+    # Do we need this? What's a good value?
+    time.sleep(1.1)
+
     # Update the test to fail
     testdir.makepyfile(test_test="""
         def test_for_reruns_test_on_test_change():
