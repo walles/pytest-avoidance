@@ -79,7 +79,7 @@ def get_depsfile_name(item):
     readme = os.path.join(CACHEROOT, 'README.txt')
     if not os.path.isfile(readme):
         with open(readme, "w") as readme_file:
-            readme_file.write("See: https://github.com/walles/pytest-avoidance")
+            readme_file.write("See: https://github.com/walles/pytest-avoidance\n")
 
     depsfile_name = os.path.join(cachedir, item.name + ".deps")
     return depsfile_name
