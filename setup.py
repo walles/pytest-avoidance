@@ -7,14 +7,13 @@ import subprocess
 from setuptools import setup
 
 # We expect tox to set GITDIR
-if os.environ['GITDIR']:
+if 'GITDIR' in os.environ:
     # We're being run from our tox.ini
     git_version = subprocess.check_output(
         ['git', '-C', os.environ['GITDIR'], 'describe', '--dirty']).decode('utf-8').strip()
 else:
     # Not run from tox.ini, just do our best
-    git_version = subprocess.check_output(
-        ['git', 'describe', '--dirty']).decode('utf-8').strip()
+    git_version = "UNKNOWN"
 
 
 def read(fname):
