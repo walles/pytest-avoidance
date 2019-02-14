@@ -10,8 +10,8 @@ pytest-avoidance
     :target: https://pypi.org/project/pytest-avoidance
     :alt: Python versions
 
-.. image:: https://travis-ci.org/walles/pytest-avoidance.svg?branch=master
-    :target: https://travis-ci.org/walles/pytest-avoidance
+.. image:: https://travis-ci.com/walles/pytest-avoidance.svg?branch=master
+    :target: https://travis-ci.com/walles/pytest-avoidance
     :alt: See Build Status on Travis CI
 
 .. image:: https://ci.appveyor.com/api/projects/status/github/walles/pytest-avoidance?branch=master
@@ -20,22 +20,21 @@ pytest-avoidance
 
 Makes pytest skip tests that don't need rerunning
 
-----
 
-This `pytest`_ plugin was generated with `Cookiecutter`_ along with
-`@hackebrot`_'s `cookiecutter-pytest-plugin`_ template.
+How pytest-avoidance avoids tests
+---------------------------------
+Each test is run with coverage enabled.
 
+After running each test, ``pytest-avoidance`` stores a list of which files
+each test touched.
 
-Features
---------
+The next time a test run is requested, ``pytest-avoidance`` checks if any
+of the files covered by this test have changed. If none have, the test can
+be delared to ``PASS``, even without running it!
 
-* TODO
-
-
-Requirements
-------------
-
-* TODO
+``pytest-avoidance`` does not cache failures. Mostly because AFAIU
+``bazel`` doesn't either, and I'm just guessing they have good reasons not
+to...
 
 
 Installation
@@ -46,28 +45,28 @@ You can install "pytest-avoidance" via `pip`_ from `PyPI`_::
     $ pip install pytest-avoidance
 
 
-Usage
------
-
-* TODO
-
 Contributing
 ------------
-Contributions are very welcome. Tests can be run with `tox`_, please ensure
-the coverage at least stays the same before you submit a pull request.
+Contributions are very welcome. Please run tests before making PRs:
+
+    $ tox --parallel=auto --skip-missing-interpreters=true
+
 
 License
 -------
-
 Distributed under the terms of the `MIT`_ license, "pytest-avoidance" is free
-and open source software
+and open source software.
 
 
 Issues
 ------
-
 If you encounter any problems, please `file an issue`_ along with a detailed
 description.
+
+----
+
+This `pytest`_ plugin was generated with `Cookiecutter`_ along with
+`@hackebrot`_'s `cookiecutter-pytest-plugin`_ template.
 
 .. _`Cookiecutter`: https://github.com/audreyr/cookiecutter
 .. _`@hackebrot`: https://github.com/hackebrot
