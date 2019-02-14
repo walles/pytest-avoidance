@@ -45,6 +45,12 @@ You can install "pytest-avoidance" via `pip`_ from `PyPI`_::
     $ pip install pytest-avoidance
 
 
+Issues
+------
+If you encounter any problems, please `file an issue`_ along with a detailed
+description.
+
+
 Contributing
 ------------
 Contributions are very welcome. Please run tests before making PRs:
@@ -52,16 +58,24 @@ Contributions are very welcome. Please run tests before making PRs:
     $ tox --parallel=auto --skip-missing-interpreters=true
 
 
+Releasing a new Version
+-----------------------
+1. Do ``git tag | cat`` and think about what the next version number should be.
+2. Do ``git tag --annotate 1.2.3`` to set the next version number. The
+   text you write for this tag will show up as the release description on Github,
+   write something nice! And remember that the first line is the subject line for
+   the release.
+3. ``tox -e pypi``
+4. ``git push --tags``
+
+Your release should now be visible on the `pytest-avoidance page on Pypi`_.
+
+
 License
 -------
 Distributed under the terms of the `MIT`_ license, "pytest-avoidance" is free
 and open source software.
 
-
-Issues
-------
-If you encounter any problems, please `file an issue`_ along with a detailed
-description.
 
 ----
 
@@ -80,3 +94,4 @@ This `pytest`_ plugin was generated with `Cookiecutter`_ along with
 .. _`tox`: https://tox.readthedocs.io/en/latest/
 .. _`pip`: https://pypi.org/project/pip/
 .. _`PyPI`: https://pypi.org/project
+.. _pytest-avoidance page on Pypi: https://pypi.org/project/pytest-avoidance

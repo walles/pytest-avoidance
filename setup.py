@@ -3,7 +3,10 @@
 
 import os
 import codecs
+import subprocess
 from setuptools import setup
+
+git_version = subprocess.check_output(['git', 'describe', '--dirty']).decode('utf-8').strip()
 
 
 def read(fname):
@@ -13,7 +16,7 @@ def read(fname):
 
 setup(
     name='pytest-avoidance',
-    version='0.1.0',
+    version=git_version,
     author='Johan Walles',
     author_email='johan.walles@gmail.com',
     maintainer='Johan Walles',
