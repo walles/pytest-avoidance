@@ -1,4 +1,6 @@
-# Config file for automatic testing at travis-ci.org
+# Required for Python 3.7 as of: 2019feb14
+# https://docs.travis-ci.com/user/languages/python/
+dist: xenial
 
 sudo: false
 language: python
