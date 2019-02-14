@@ -109,6 +109,7 @@ def has_cached_success(item):
                 return False
 
     # No mismatch found for this test, it's a cache hit!
+    print("Nothing changed, cache hit: " + depsfile_name)
     return True
 
 
