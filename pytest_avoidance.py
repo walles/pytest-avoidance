@@ -10,8 +10,11 @@ import hashlib
 import errno
 import sys
 import os
+import re
 
 CACHEROOT = None
+
+PARAMETERS_RE = re.compile(r'\[([^]]+)\]')
 
 
 # Global state
@@ -56,6 +59,16 @@ def mkdir_p(path):
             raise
 
 
+def censor_parameters(itemname):
+    # type: (str) -> str
+    match = PARAMETERS_RE.search(itemname)
+    if not match:
+        return itemname
+
+    censoring = hashlib.md5(bytearray(itemname, encoding="utf-8", errors="replace")).hexdigest()
+    return PARAMETERS_RE.sub('[' + censoring + ']', itemname)
+
+
 def get_depsfile_name(item):
     # Dependencies file naming scheme:
     # .pytest-avoidance/<VM-identifier>/<path to .py file>/testname.deps
@@ -81,7 +94,7 @@ def get_depsfile_name(item):
         with open(readme, "w") as readme_file:
             readme_file.write("See: https://github.com/walles/pytest-avoidance\n")
 
-    depsfile_name = os.path.join(cachedir, item.name + ".deps")
+    depsfile_name = os.path.join(cachedir, censor_parameters(item.name) + ".deps")
     return depsfile_name
 
 
