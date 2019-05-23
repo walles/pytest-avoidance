@@ -26,6 +26,21 @@ def test_reruns_test_on_test_change(testdir):
     assert testdir.runpytest('-v').ret != 0
 
 
+def test_parametrized_test(testdir):
+    # Create a parametrized test
+    testdir.makepyfile(test_test="""
+        import pytest
+
+        @pytest.mark.parametrize('param', ['a/b', 'c/d'])
+        def test_parametrization(param):
+            assert True
+    """)
+
+    # Verify that the test suite passes, both without and with the cache
+    assert testdir.runpytest('-v').ret == 0
+    assert testdir.runpytest('-v').ret == 0
+
+
 def test_skips_rerun_on_pass(testdir):
     # Create a test that stores its runtime on disk
     timestampfile = str(testdir.tmpdir.join("timestampfile"))
