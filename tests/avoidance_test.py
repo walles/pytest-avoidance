@@ -69,9 +69,14 @@ def test_skips_rerun_on_pass(testdir):
     # Rerunning the test should still pass, since we haven't modified anything
     result = testdir.runpytest('-v')
     assert result.ret == 0
-    result.stdout.fnmatch_lines([
-        '*::test_for_skips_rerun_on_pass PASSED*',
-    ])
+    result.stdout.fnmatch_lines(
+        [
+            "collecting ... collected 1 item / 1 deselected",
+            "avoidance: skipped 1 cached success",
+            "",
+            "=*= 1 deselected in *s =*=",
+        ]
+    )
 
     # Verify that the test pass was from the cache
     t1 = os.path.getmtime(timestampfile)

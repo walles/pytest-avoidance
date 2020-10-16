@@ -18,7 +18,7 @@ PARAMETERS_RE = re.compile(r'\[([^]]+)\]')
 
 
 # Global state
-have_cache_hits = False
+cache_hits_count = 0
 
 
 def pytest_configure(config):
@@ -122,53 +122,22 @@ def has_cached_success(item):
     return True
 
 
-def fake_pass_report(item, stage):
-    # FIXME: Should we indicate somehow this result is from the cache?
-
-    # From pytest_runtest_makereport():
-    # https://github.com/pytest-dev/pytest/blob/master/src/_pytest/runner.py
-    keywords = {x: 1 for x in item.keywords}
-
-    longrepr = None  # Used for exception info, but since we're passing this should be None
-
-    # From pytest_runtest_makereport():
-    # https://github.com/pytest-dev/pytest/blob/master/src/_pytest/runner.py
-    sections = []
-    for rwhen, key, content in item._report_sections:
-        sections.append(("Captured %s %s" % (key, rwhen), content))
-
-    fake_report = _pytest.reports.TestReport(
-        item.nodeid,
-        item.location,
-        keywords,
-        "passed",  # Magic constant: https://github.com/pytest-dev/pytest/blob/7dcd9bf5add337686ec6f2ee81b24e8424319dba/src/_pytest/reports.py#L92
-        longrepr,
-        stage,
-        sections,
-        0,
-        user_properties=item.user_properties,
-    )
-
-    # Log "setup" and "teardown" here as well?
-    item.ihook.pytest_runtest_logreport(report=fake_report)
-
-
-def pytest_collection_modifyitems(session, config, items):
-    global have_cache_hits
+def pytest_collection_modifyitems(config, items):
+    global cache_hits_count
     cache_hits = []
     cache_misses = []
 
     # Filter out known-pass items
     for item in items:
         if has_cached_success(item):
-            have_cache_hits = True
             cache_hits.append(item)
         else:
             cache_misses.append(item)
     items[:] = cache_misses
 
-    for hit in cache_hits:
-        fake_pass_report(hit, "call")
+    if cache_hits:
+        cache_hits_count = len(cache_hits)
+        config.hook.pytest_deselected(items=cache_hits)
 
 
 def pytest_runtest_setup(item):
@@ -202,8 +171,15 @@ def pytest_runtest_makereport(item, call):
     return None
 
 
+def pytest_report_collectionfinish():
+    if cache_hits_count:
+        return "avoidance: skipped {} cached {}".format(
+            cache_hits_count, "success" if cache_hits_count == 1 else "successes"
+        )
+
+
 def pytest_sessionfinish(session, exitstatus):
-    if exitstatus == 5 and have_cache_hits:
+    if exitstatus == 5 and cache_hits_count:
         # Exit status 5 means no tests were run. If we have cache hits,
         # this means we hit all tests, and we should report all-tests-run.
         session.exitstatus = 0
