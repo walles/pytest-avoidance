@@ -14,10 +14,6 @@ pytest-avoidance
     :target: https://travis-ci.com/walles/pytest-avoidance
     :alt: See Build Status on Travis CI
 
-.. image:: https://ci.appveyor.com/api/projects/status/github/walles/pytest-avoidance?branch=master
-    :target: https://ci.appveyor.com/project/walles/pytest-avoidance/branch/master
-    :alt: See Build Status on AppVeyor
-
 Makes pytest skip tests that don't need rerunning
 
 
