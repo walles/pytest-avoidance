@@ -33,7 +33,7 @@ setup(
     description='Makes pytest skip tests that don not need rerunning',
     long_description=read('README.rst'),
     py_modules=['pytest_avoidance'],
-    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*',
+    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
     install_requires=['pytest>=3.5.0', 'coverage==4.5.2'],
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -47,6 +47,8 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: Implementation :: CPython',
         'Operating System :: OS Independent',
         'License :: OSI Approved :: MIT License',
