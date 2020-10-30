@@ -75,6 +75,7 @@ def get_depsfile_name(item):
 
     # From: https://github.com/pytest-dev/pytest/blob/9f9f6ee48beba8bbf0911e458590aa67b45bd867/src/_pytest/nodes.py#L290
     test_file, lineno = _pytest.nodes.get_fslocation_from_item(item)
+    test_file = str(test_file)
     if test_file[1] == ':':
         # Somebody on a Windows box, please test this
         test_file = test_file.replace(':', '/', 1)
