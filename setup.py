@@ -30,7 +30,7 @@ setup(
     maintainer_email='johan.walles@gmail.com',
     license='MIT',
     url='https://github.com/walles/pytest-avoidance',
-    description='Makes pytest skip tests that don not need rerunning',
+    description='Makes pytest skip tests that do not need rerunning',
     long_description=read('README.rst'),
     py_modules=['pytest_avoidance'],
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
