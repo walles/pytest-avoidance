@@ -1,11 +1,11 @@
-# Required for Python 3.7 as of: 2019feb14
+# Required for Python 3.10 as of: 2022may29
 # https://docs.travis-ci.com/user/languages/python/
-dist: xenial
+os: linux
+dist: focal
 
-sudo: false
 language: python
 
-matrix:
+jobs:
     include:
       - python: 2.7
         env: TOX_ENV=py27
